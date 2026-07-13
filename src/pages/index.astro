@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import site from '../data/site.json';
+import { visibleProducts, withBase } from '../lib/data.mjs';
+
+const latest = visibleProducts.slice(0, 8);
+---
+
+<Base>
+  <section class="hero">
+    <h1>{site.name}</h1>
+    <p>{site.tagline}</p>
+    <a class="btn" href={withBase('/products/')}>進入商品牆</a>
+  </section>
+
+  <h2 class="section-title">最新上架</h2>
+  <div class="grid">
+    {latest.map((p) => <ProductCard product={p} />)}
+  </div>
+</Base>

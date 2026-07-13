@@ -1,0 +1,90 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+import { visibleProducts, categoryById, masterById, fmtPrice, withBase } from '../../lib/data.mjs';
+import { photoAsset } from '../../lib/photos.mjs';
+
+export async function getStaticPaths() {
+  const { visibleProducts } = await import('../../lib/data.mjs');
+  return visibleProducts.map((p) => ({ params: { id: p.id }, props: { product: p } }));
+}
+
+const { product: p } = Astro.props;
+const category = categoryById.get(p.category);
+const master = p.master ? masterById.get(p.master) : null;
+const photos = p.photos.map((f) => photoAsset(p.id, f));
+
+// OG 分享預覽用封面圖（絕對網址）
+const ogImg = await getImage({ src: photos[0], width: 1200, format: 'jpeg' });
+const ogImageUrl = new URL(ogImg.src, Astro.site).href;
+
+const title = `${p.name_zh}｜${fmtPrice(p.price)}`;
+const description = p.description ?? `${p.name_zh}，歡迎私訊詢問。`;
+---
+
+<Base title={title} description={description} ogImage={ogImageUrl}>
+  <div class="product-page">
+    <div class="gallery">
+      <div class="gallery-main">
+        {photos.map((img, i) => (
+          <div class={`main-slide${i === 0 ? ' active' : ''}`} data-idx={i}>
+            <Image src={img} alt={`${p.name_zh} 照片 ${i + 1}`} width={1200} />
+          </div>
+        ))}
+        {p.status === 'sold' && <div class="sold-badge"><span>已售出</span></div>}
+      </div>
+      {photos.length > 1 && (
+        <div class="thumbs" id="thumbs">
+          {photos.map((img, i) => (
+            <button type="button" class={i === 0 ? 'active' : ''} data-idx={i} aria-label={`看第 ${i + 1} 張照片`}>
+              <Image src={img} alt="" width={144} height={144} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div class="product-info">
+      <h1>{p.name_zh}</h1>
+      {p.name_th && <p class="name-th">{p.name_th}</p>}
+      <table class="spec">
+        <tbody>
+          <tr><th>年份</th><td>{p.year}</td></tr>
+          {master && (
+            <tr><th>師父</th><td><a href={withBase(`/products/?master=${master.id}`)}>{master.name}</a></td></tr>
+          )}
+          <tr><th>種類</th><td><a href={withBase(`/products/?category=${category.id}`)}>{category.name}</a></td></tr>
+        </tbody>
+      </table>
+      <p class="price">{fmtPrice(p.price)}</p>
+      {p.description && <p class="description">{p.description}</p>}
+
+      {p.status === 'sold' ? (
+        <div class="sold-box">已售出</div>
+      ) : (
+        <div class="buy-box">
+          <p>想恭請這尊聖物？請直接私訊我們</p>
+          <a class="btn btn-solid" href={site.facebook} target="_blank" rel="noopener">Facebook 私訊</a>
+          <a class="btn btn-solid" href={site.line} target="_blank" rel="noopener">LINE 私訊</a>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <script>
+    // 縮圖切換大圖
+    const thumbs = document.getElementById('thumbs');
+    if (thumbs) {
+      const slides = [...document.querySelectorAll('.main-slide')];
+      const buttons = [...thumbs.querySelectorAll('button')];
+      thumbs.addEventListener('click', (e) => {
+        const btn = e.target instanceof Element && e.target.closest('button');
+        if (!btn) return;
+        const idx = btn.dataset.idx;
+        for (const s of slides) s.classList.toggle('active', s.dataset.idx === idx);
+        for (const b of buttons) b.classList.toggle('active', b === btn);
+      });
+    }
+  </script>
+</Base>

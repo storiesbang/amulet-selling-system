@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+import site from '../data/site.json';
+import { categories, masters, withBase } from '../lib/data.mjs';
+import '../styles/global.css';
+
+const { title, description = site.tagline, ogImage } = Astro.props;
+const fullTitle = title ? `${title}｜${site.name}` : site.name;
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+
+const amuletCats = categories.filter((c) => c.product_type === 'amulet');
+const accessoryCats = categories.filter((c) => c.product_type === 'accessory');
+const articles = (await getCollection('articles')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl.href} />
+    <meta property="og:site_name" content={site.name} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    {ogImage && <meta name="twitter:card" content="summary_large_image" />}
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href={withBase('/')}>{site.name}</a>
+        <input id="nav-toggle" type="checkbox" hidden />
+        <label for="nav-toggle" class="hamburger" aria-label="開啟選單">☰</label>
+        <nav class="nav">
+          <details class="dd">
+            <summary>聖物</summary>
+            <ul>
+              {amuletCats.map((c) => (
+                <li><a href={withBase(`/products/?category=${c.id}`)}>{c.name}</a></li>
+              ))}
+            </ul>
+          </details>
+          <details class="dd">
+            <summary>師父</summary>
+            <ul>
+              {masters.map((m) => (
+                <li><a href={withBase(`/products/?master=${m.id}`)}>{m.name}</a></li>
+              ))}
+            </ul>
+          </details>
+          <details class="dd">
+            <summary>配件</summary>
+            <ul>
+              {accessoryCats.map((c) => (
+                <li><a href={withBase(`/products/?category=${c.id}`)}>{c.name}</a></li>
+              ))}
+            </ul>
+          </details>
+          <details class="dd">
+            <summary>佛牌介紹</summary>
+            <ul>
+              {articles.map((a) => (
+                <li><a href={withBase(`/about/${a.id}/`)}>{a.data.title}</a></li>
+              ))}
+            </ul>
+          </details>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <p>{site.name}</p>
+      <p class="contact">
+        購買請私訊：
+        <a href={site.facebook} target="_blank" rel="noopener">Facebook</a>｜
+        <a href={site.line} target="_blank" rel="noopener">LINE</a>
+      </p>
+    </footer>
+
+    <script>
+      // 下拉選單：一次只開一個，點外面就收合
+      const dds = [...document.querySelectorAll('.dd')];
+      for (const d of dds) {
+        d.addEventListener('toggle', () => {
+          if (d.open) for (const o of dds) if (o !== d) o.open = false;
+        });
+      }
+      document.addEventListener('click', (e) => {
+        if (!(e.target instanceof Element) || !e.target.closest('.dd')) {
+          for (const o of dds) o.open = false;
+        }
+      });
+    </script>
+  </body>
+</html>

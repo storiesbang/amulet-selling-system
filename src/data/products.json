@@ -1,0 +1,71 @@
+[
+  {
+    "id": "somdej-ajahn-toh-2515",
+    "product_type": "amulet",
+    "category": "somdej",
+    "name_zh": "崇迪佛 瓦拉康廟",
+    "name_th": "พระสมเด็จ วัดระฆัง",
+    "year": "佛曆2515",
+    "master": "ajahn-toh",
+    "price": 28000,
+    "description": "瓦拉康廟出廟崇迪，粉質溫潤、經典三層座。附廟盒與原裝塑殼，品相如圖，歡迎私訊詢問細節照。",
+    "status": "available",
+    "photos": [
+      "cover.jpg",
+      "back.jpg",
+      "detail.jpg"
+    ],
+    "created_at": "2026-07-01"
+  },
+  {
+    "id": "pidta-lp-koon-2536",
+    "product_type": "amulet",
+    "category": "pidta",
+    "name_zh": "必達 龍婆坤",
+    "name_th": "พระปิดตา หลวงพ่อคูณ",
+    "year": "佛曆2536",
+    "master": "lp-koon",
+    "price": 8800,
+    "description": "龍婆坤師父加持必達，掩面遮災、擋險避小人。聖粉料，背面有廟印。",
+    "status": "sold",
+    "photos": [
+      "cover.jpg",
+      "back.jpg"
+    ],
+    "created_at": "2026-06-20"
+  },
+  {
+    "id": "takrut-ajahn-pi-2560",
+    "product_type": "amulet",
+    "category": "takrut",
+    "name_zh": "符管 阿贊比",
+    "name_th": "ตะกรุด อาจารย์พีร์",
+    "year": "2560",
+    "master": "ajahn-pi",
+    "price": 3500,
+    "description": "阿贊比親製符管，手工刻符、紅繩纏製，主人緣與招財。長度約 5 公分，可直接佩戴。",
+    "status": "available",
+    "photos": [
+      "cover.jpg",
+      "detail.jpg"
+    ],
+    "created_at": "2026-07-08"
+  },
+  {
+    "id": "necklace-steel-60cm",
+    "product_type": "accessory",
+    "category": "necklace",
+    "name_zh": "不鏽鋼佛牌鍊 60cm 單掛",
+    "name_th": null,
+    "year": "2569",
+    "master": null,
+    "price": 650,
+    "description": "316 不鏽鋼佛牌鍊，60 公分單掛款，不過敏、不褪色，日常佩戴首選。",
+    "status": "available",
+    "photos": [
+      "cover.jpg",
+      "clasp.jpg"
+    ],
+    "created_at": "2026-07-05"
+  }
+]

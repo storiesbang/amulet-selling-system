@@ -1,0 +1,12 @@
+[
+  { "id": "somdej", "name": "崇迪", "product_type": "amulet", "sort_order": 1 },
+  { "id": "pidta", "name": "必達", "product_type": "amulet", "sort_order": 2 },
+  { "id": "phra-kring", "name": "藥師佛", "product_type": "amulet", "sort_order": 3 },
+  { "id": "hun-payont", "name": "魂魄勇", "product_type": "amulet", "sort_order": 4 },
+  { "id": "takrut", "name": "符管", "product_type": "amulet", "sort_order": 5 },
+  { "id": "necklace", "name": "佛牌鍊", "product_type": "accessory", "sort_order": 1 },
+  { "id": "clamp", "name": "鉗子", "product_type": "accessory", "sort_order": 2 },
+  { "id": "c-ring", "name": "C環", "product_type": "accessory", "sort_order": 3 },
+  { "id": "lobster-clasp", "name": "龍蝦環", "product_type": "accessory", "sort_order": 4 },
+  { "id": "magnifier", "name": "放大鏡", "product_type": "accessory", "sort_order": 5 }
+]

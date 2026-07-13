@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { visibleProducts, categories, masters } from '../../lib/data.mjs';
+
+// 篩選選項只列出現有商品實際用到的值
+const usedCategoryIds = new Set(visibleProducts.map((p) => p.category));
+const usedMasterIds = new Set(visibleProducts.map((p) => p.master).filter(Boolean));
+const categoryOptions = categories.filter((c) => usedCategoryIds.has(c.id));
+const masterOptions = masters.filter((m) => usedMasterIds.has(m.id));
+const yearOptions = [...new Set(visibleProducts.map((p) => p.year).filter(Boolean))].sort().reverse();
+---
+
+<Base title="商品牆" description="所有聖物與配件，可依種類、師父、年份與價格篩選。">
+  <h1 class="page-title">商品牆</h1>
+
+  <form class="filters" id="filters">
+    <label>種類
+      <select name="category">
+        <option value="">全部</option>
+        {categoryOptions.map((c) => <option value={c.id}>{c.name}</option>)}
+      </select>
+    </label>
+    <label>師父
+      <select name="master">
+        <option value="">全部</option>
+        {masterOptions.map((m) => <option value={m.id}>{m.name}</option>)}
+      </select>
+    </label>
+    <label>年份
+      <select name="year">
+        <option value="">全部</option>
+        {yearOptions.map((y) => <option value={y}>{y}</option>)}
+      </select>
+    </label>
+    <label>最低價
+      <input type="number" name="min" min="0" placeholder="NT$" />
+    </label>
+    <label>最高價
+      <input type="number" name="max" min="0" placeholder="NT$" />
+    </label>
+    <button type="button" class="clear" id="clear-filters">清除篩選</button>
+  </form>
+
+  <div class="grid" id="product-grid">
+    {visibleProducts.map((p) => <ProductCard product={p} />)}
+  </div>
+  <p class="empty-msg" id="empty-msg" hidden>找不到符合條件的商品。</p>
+
+  <script>
+    const form = document.getElementById('filters');
+    const cards = [...document.querySelectorAll('#product-grid .card')];
+    const emptyMsg = document.getElementById('empty-msg');
+    const fields = ['category', 'master', 'year', 'min', 'max'];
+
+    function apply() {
+      const f = Object.fromEntries(fields.map((k) => [k, form.elements[k].value.trim()]));
+      let shown = 0;
+      for (const card of cards) {
+        const d = card.dataset;
+        const ok =
+          (!f.category || d.category === f.category) &&
+          (!f.master || d.master === f.master) &&
+          (!f.year || d.year === f.year) &&
+          (!f.min || Number(d.price) >= Number(f.min)) &&
+          (!f.max || Number(d.price) <= Number(f.max));
+        card.hidden = !ok;
+        if (ok) shown++;
+      }
+      emptyMsg.hidden = shown > 0;
+      // 條件同步到網址，可直接分享
+      const params = new URLSearchParams();
+      for (const k of fields) if (f[k]) params.set(k, f[k]);
+      const qs = params.toString();
+      history.replaceState(null, '', location.pathname + (qs ? '?' + qs : ''));
+    }
+
+    // 從網址帶入初始條件（下拉選單連結、分享連結）
+    const initial = new URLSearchParams(location.search);
+    for (const k of fields) {
+      const v = initial.get(k);
+      if (v) form.elements[k].value = v;
+    }
+    form.addEventListener('input', apply);
+    document.getElementById('clear-filters').addEventListener('click', () => {
+      form.reset();
+      apply();
+    });
+    apply();
+  </script>
+</Base>

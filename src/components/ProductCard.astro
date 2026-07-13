@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import { withBase, fmtPrice } from '../lib/data.mjs';
+import { photoAsset } from '../lib/photos.mjs';
+
+const { product: p } = Astro.props;
+const cover = photoAsset(p.id, p.photos[0]);
+---
+
+<a
+  class="card"
+  href={withBase(`/products/${p.id}/`)}
+  data-category={p.category}
+  data-master={p.master ?? ''}
+  data-year={p.year}
+  data-price={p.price}
+  data-status={p.status}
+>
+  <div class="card-img">
+    <Image src={cover} alt={p.name_zh} width={640} height={640} />
+    {p.status === 'sold' && <div class="sold-badge"><span>已售出</span></div>}
+  </div>
+  <div class="card-body">
+    <h3>{p.name_zh}</h3>
+    <p class="price">{fmtPrice(p.price)}</p>
+  </div>
+</a>
