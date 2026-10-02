@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
 import site from '../data/site.json';
@@ -9,6 +11,7 @@ const latest = visibleProducts.slice(0, 8);
 
 <Base>
   <section class="hero">
+    <Image class="logo" src={logo} alt={site.name} width={560} loading="eager" />
     <h1>{site.name}</h1>
     <p>{site.tagline}</p>
     <a class="btn" href={withBase('/products/')}>進入商品牆</a>

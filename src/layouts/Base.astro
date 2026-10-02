@@ -2,9 +2,13 @@
 import { getCollection } from 'astro:content';
 import site from '../data/site.json';
 import { categories, masters, withBase } from '../lib/data.mjs';
+import { Image, getImage } from 'astro:assets';
+import logo from '../assets/logo.png';
 import '../styles/global.css';
 
-const { title, description = site.tagline, ogImage } = Astro.props;
+const favicon = await getImage({ src: logo, width: 64, format: 'png' });
+const logoOg = await getImage({ src: logo, width: 800, format: 'jpeg' });
+const { title, description = site.tagline, ogImage = new URL(logoOg.src, Astro.site).href } = Astro.props;
 const fullTitle = title ? `${title}｜${site.name}` : site.name;
 const pageUrl = new URL(Astro.url.pathname, Astro.site);
 
@@ -18,6 +22,8 @@ const articles = (await getCollection('articles')).sort((a, b) => a.data.order -
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <meta name="theme-color" content="#0b1426" />
     <meta name="description" content={description} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -30,7 +36,10 @@ const articles = (await getCollection('articles')).sort((a, b) => a.data.order -
   <body>
     <header class="topbar">
       <div class="topbar-inner">
-        <a class="brand" href={withBase('/')}>{site.name}</a>
+        <a class="brand" href={withBase('/')}>
+          <Image class="logo" src={logo} alt="" width={88} height={88} />
+          {site.name}
+        </a>
         <input id="nav-toggle" type="checkbox" hidden />
         <label for="nav-toggle" class="hamburger" aria-label="開啟選單">☰</label>
         <nav class="nav">

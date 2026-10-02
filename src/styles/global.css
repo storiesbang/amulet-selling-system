@@ -1,13 +1,13 @@
-/* 深色金色調，沉穩典雅 */
+/* 午夜藍＋香檳金，對應「老邦與佛牌」logo */
 :root {
-  --bg: #14100b;
-  --surface: #1e1810;
-  --surface-2: #262017;
-  --border: #3a3122;
-  --gold: #c9a227;
-  --gold-soft: #e8d48b;
-  --text: #e9e2d0;
-  --muted: #a3977b;
+  --bg: #0b1426;
+  --surface: #111d35;
+  --surface-2: #172644;
+  --border: #2a3a5c;
+  --gold: #d4ae6a;
+  --gold-soft: #ecd5a3;
+  --text: #ece4d2;
+  --muted: #9aa5bd;
   --sold: #8a3b3b;
   --maxw: 1100px;
 }
@@ -16,7 +16,7 @@
 html { color-scheme: dark; }
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(ellipse at 50% -10%, #16284d 0%, var(--bg) 60%) fixed var(--bg);
   color: var(--text);
   font-family: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   line-height: 1.7;
@@ -31,7 +31,8 @@ h1, h2, h3 { font-weight: 600; letter-spacing: 0.05em; }
 /* ---------- Top bar ---------- */
 .topbar {
   border-bottom: 1px solid var(--border);
-  background: rgba(20, 16, 11, 0.95);
+  background: rgba(11, 20, 38, 0.92);
+  backdrop-filter: blur(6px);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -46,11 +47,16 @@ h1, h2, h3 { font-weight: 600; letter-spacing: 0.05em; }
   flex-wrap: wrap;
 }
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-size: 1.3rem;
   color: var(--gold);
   letter-spacing: 0.15em;
   margin-right: auto;
 }
+.logo { border-radius: 50%; box-shadow: 0 0 0 1px var(--gold); }
+.brand .logo { width: 44px; height: 44px; }
 .hamburger { display: none; cursor: pointer; font-size: 1.5rem; color: var(--gold); user-select: none; }
 .nav { display: flex; gap: 0.5rem; }
 .dd { position: relative; }
@@ -97,7 +103,13 @@ h1, h2, h3 { font-weight: 600; letter-spacing: 0.05em; }
 .footer .contact a { margin: 0 0.5rem; }
 
 /* ---------- 首頁 ---------- */
-.hero { text-align: center; padding: 4.5rem 1rem 3.5rem; }
+.hero { text-align: center; padding: 3.5rem 1rem 3.5rem; }
+.hero .logo {
+  width: min(280px, 70vw);
+  height: auto;
+  margin: 0 auto 1.8rem;
+  box-shadow: 0 0 0 2px var(--gold), 0 0 60px rgba(90, 150, 230, 0.25);
+}
 .hero h1 { font-size: 2.4rem; color: var(--gold); letter-spacing: 0.25em; margin: 0 0 1rem; }
 .hero p { color: var(--muted); margin: 0 0 2rem; }
 .section-title {
@@ -144,7 +156,7 @@ h1, h2, h3 { font-weight: 600; letter-spacing: 0.05em; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(20, 16, 11, 0.55);
+  background: rgba(11, 20, 38, 0.55);
   color: #fff;
   font-size: 1.3rem;
   letter-spacing: 0.3em;
